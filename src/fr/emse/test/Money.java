@@ -8,10 +8,11 @@ public class Money implements IMoney {
 		fAmount = amount;
 		fCurrency = currency;
 	}
-
+	
 	public int amount() {
 		return fAmount;
 	}
+	
 	public String currency() {
 		return fCurrency;
 	}
@@ -24,11 +25,24 @@ public class Money implements IMoney {
 		return fAmount == money.fAmount && fCurrency.equals(money.fCurrency);
 		
 	}
-	
-	public Money add(Money m) {
-		return new Money(amount() + m.amount(), currency());
+
+	@Override
+	public IMoney add(IMoney m) {
+		return m.addMoney(this);
 	}
-	
+
+	@Override
+	public IMoney addMoney(Money m) {
+		if (m.currency().equals(currency())) {
+			return new Money(amount() + m.amount(), currency());
+		} else {
+			return new MoneyBag(this, m);
+		}
+	}
+
+	@Override
+	public IMoney addMoneyBag(MoneyBag m) {
+		MoneyBag moneyBag = new MoneyBag(this);
+		return moneyBag.add(m);
+	}
 }
-
-

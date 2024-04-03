@@ -1,10 +1,9 @@
 package fr.emse.test;
 
-import java.util.Vector;
 import java.util.Objects;
+import java.util.Vector;
 
-
-public class MoneyBag {
+public class MoneyBag implements IMoney {
 	private Vector<Money> fMonies = new Vector<Money>();
 	
 	public MoneyBag(Money m) {
@@ -18,8 +17,6 @@ public class MoneyBag {
 		}
 	}
 	
-	
-	
 	MoneyBag(Money m1, Money m2) {
 		appendMoney(m1);
 		appendMoney(m2);
@@ -31,7 +28,7 @@ public class MoneyBag {
 			appendMoney(bag[i]);
 		}
 	}
-	
+
 	private void appendMoney(Money m) {
 		if (fMonies.isEmpty()) {
 			fMonies.add(m);
@@ -47,7 +44,18 @@ public class MoneyBag {
 		}
 	}
 	
-	
+	private void appendMoney(IMoney m) {
+		if (m instanceof Money) {
+			appendMoney((Money) m);
+		}
+		else {
+			MoneyBag moneyBag = (MoneyBag) m;
+			for (Money money : moneyBag.fMonies) {
+				appendMoney(money);
+			}
+		}
+	}
+
 	@Override
 	public boolean equals(Object compare) {
 		if (this == compare) return true;
@@ -56,7 +64,20 @@ public class MoneyBag {
 		return Objects.equals(fMonies, moneyBag.fMonies);
 		 
 	}
+
+	@Override
+	public IMoney add(IMoney m) {
+		return m.addMoneyBag(this);
+	}
+
+	@Override
+	public IMoney addMoney(Money m) {
+		MoneyBag moneyBag = new MoneyBag(this);
+		return moneyBag.add(m);
+	}
+
+	@Override
+	public IMoney addMoneyBag(MoneyBag m) {
+		return add(m);
+	}
 }
-
-
-
