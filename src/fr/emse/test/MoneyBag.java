@@ -1,18 +1,22 @@
 package fr.emse.test;
 
 import java.util.Vector;
+import java.util.Objects;
 
 
 public class MoneyBag {
 	private Vector<Money> fMonies = new Vector<Money>();
+	
 	MoneyBag(Money m1, Money m2) {
 		appendMoney(m1);
 		appendMoney(m2);
 	}
+	
 	MoneyBag(Money bag[]) {
 		for (int i = 0; i < bag.length; i++)
 			appendMoney(bag[i]);
 	}
+	
 	private void appendMoney(Money m) {
 		if (fMonies.isEmpty()) {
 			fMonies.add(m);
@@ -29,6 +33,14 @@ public class MoneyBag {
 						m.currency()));
 			}
 		}
+	}
+	@Override
+	public boolean equals(Object compare) {
+		if (this == compare) return true;
+		if (compare == null || getClass() != compare.getClass()) return false;	
+		MoneyBag moneyBag = (MoneyBag) compare;
+		return Objects.equals(fMonies, moneyBag.fMonies);
+		 
 	}
 }
 
