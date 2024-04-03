@@ -1,6 +1,6 @@
 package fr.emse.test;
 
-class Money {
+public class Money implements IMoney {
 	private int fAmount;
 	private String fCurrency;
 	
